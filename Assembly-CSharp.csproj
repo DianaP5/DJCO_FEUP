@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\GroundCheck.cs" />
      <Compile Include="Assets\Scripts\PlatformGenerator.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
