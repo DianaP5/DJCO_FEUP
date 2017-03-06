@@ -1,10 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlatformGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Spikes.cs">
     <Files>
-      <File FileName="Assets\Scripts\Player.cs" Line="27" Column="14" />
-      <File FileName="Assets\Scripts\GroundCheck.cs" Line="26" Column="1" />
-      <File FileName="Assets\Scripts\PlatformGenerator.cs" Line="17" Column="29" />
+      <File FileName="Assets\Scripts\Player.cs" Line="91" Column="2" />
+      <File FileName="Assets\Scripts\GroundCheck.cs" Line="7" Column="24" />
+      <File FileName="Assets\Scripts\PlatformGenerator.cs" Line="30" Column="4" />
+      <File FileName="Assets\Scripts\PlayerMovement.cs" Line="112" Column="45" />
+      <File FileName="Assets\Scripts\Spikes.cs" Line="18" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,10 +14,18 @@
           <Node name="DJCO" expanded="True">
             <Node name="Assembly-CSharp" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="PlatformGenerator.cs" selected="True" />
+                <Node name="Spikes.cs" selected="True" />
               </Node>
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State name="__root__">
+          <Node name="DJCO" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>

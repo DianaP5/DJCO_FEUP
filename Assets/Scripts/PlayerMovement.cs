@@ -93,7 +93,24 @@ public class PlayerMovement : MonoBehaviour {
 		}*/
 	}
 
+	public void Damage(int dmg){
+		curHealth -= dmg;
+	}
+
 	void Die(){
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
+	}
+
+	public IEnumerator KnockBack(float knockDur, float knockPower, Vector3 kbDir){
+		float timer = 0;
+		Debug.Log (knockDur);
+
+		while (knockDur > timer) {
+			Debug.Log ("HERE2");
+			timer += Time.deltaTime;
+
+			rb2d.AddForce (new Vector3 (kbDir.x * -75, kbDir.y * knockPower, transform.position.z));
+		}
+		yield return 0;
 	}
 }

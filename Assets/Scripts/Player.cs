@@ -88,6 +88,10 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	public void Damage(int dmg){
+		curHealth -= dmg;
+	}
+
 	void Die(){
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
