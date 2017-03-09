@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	private Rigidbody2D rb2d;
 
+	public GameManager theGameManager;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -112,5 +114,13 @@ public class PlayerMovement : MonoBehaviour {
 			rb2d.AddForce (new Vector3 (kbDir.x * -75, kbDir.y * knockPower, transform.position.z));
 		}
 		yield return 0;
+	}
+
+	void OnCollisionEnter2D (Collision2D other)
+	{
+		if (other.gameObject.tag == "killbox") 
+		{
+			theGameManager.RestartGame ();	
+		}
 	}
 }
