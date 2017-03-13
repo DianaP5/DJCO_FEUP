@@ -8,19 +8,24 @@ public class GroundCheck : MonoBehaviour {
 
 	void Start(){
 		player = gameObject.GetComponentInParent<PlayerMovement> ();
-		Debug.Log (player.grounded);
+		player.grounded = 0;
 	}
 
 	void OnTriggerEnter2D (Collider2D coll){
-		player.grounded = true;
+		if (!coll.CompareTag("Book")) {
+			player.grounded++;
+		}
+
 	}
 
 	void OnTriggerExit2D(Collider2D coll){
-		player.grounded = false;
+		if (!coll.CompareTag("Book")) {
+			player.grounded--;
+		}
 	}
 
 	void OnTriggerStay2d(Collider2D coll){
-		player.grounded = true;
+		player.grounded = player.grounded;
 	}
 
 }

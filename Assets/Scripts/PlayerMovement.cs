@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour {
@@ -14,8 +15,12 @@ public class PlayerMovement : MonoBehaviour {
 	public int curHealth;
 	public int maxHealth;
 
-	public bool grounded;
+	public int grounded;
 	public bool canDoubleJump;
+
+	public GameObject gameWonUI;
+	public Text Livros;
+	public Text scoreText;
 
 	private float timestamp;
 
@@ -23,17 +28,22 @@ public class PlayerMovement : MonoBehaviour {
 
 	private Rigidbody2D rb2d;
 
+	private gameMaster gm;
+
 	// Use this for initialization
 	void Start () {
 		rb2d = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
 
 		curHealth = maxHealth;
+		gm = GameObject.FindGameObjectWithTag ("GameMaster").GetComponent<gameMaster> ();
+		gameWonUI.SetActive (false);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		anim.SetBool ("Grounded",grounded);
+		//anim.SetBool ("Grounded",grounded);
+		anim.SetInteger("Grounded",grounded);
 		anim.SetFloat ("Speed", Mathf.Abs(rb2d.velocity.x));
 
 		rb2d.velocity = new Vector2 (moveSpeed, rb2d.velocity.y);
@@ -49,7 +59,8 @@ public class PlayerMovement : MonoBehaviour {
 
 		//jumping
 		if (Time.time >= timestamp && Input.GetButton("Jump")) {
-			if (grounded) {
+			//if (grounded) {
+			if (grounded==1) {
 				rb2d.AddForce (Vector2.up * jumpPower);
 				canDoubleJump = true;
 			} else {
@@ -112,5 +123,40 @@ public class PlayerMovement : MonoBehaviour {
 			rb2d.AddForce (new Vector3 (kbDir.x * -75, kbDir.y * knockPower, transform.position.z));
 		}
 		yield return 0;
+	}
+
+	void OnTriggerEnter2D(Collider2D col){
+		if (col.CompareTag("Book")) {
+			Destroy (col.gameObject);
+			gm.points += 1;
+		}
+		if (col.CompareTag("Door")) {
+			if(gm.points<=1)
+				Livros.text = ("You were able to collect " + gm.points + " Book!");
+			else
+				Livros.text = ("You were able to collect " + gm.points + " Books!");
+
+			if (gm.points<10) {
+				scoreText.text = ("Exame score: F");
+			}
+			else if (gm.points<20) {
+				scoreText.text = ("Exame score: D");
+			}
+			else if (gm.points<30) {
+				scoreText.text = ("Exame score: C");
+			}
+			else if (gm.points<40) {
+				scoreText.text = ("Exame score: B");
+			}
+			else if (gm.points<50) {
+				scoreText.text = ("Exame score: A");
+			}
+			else if (gm.points>=50) {
+				scoreText.text = ("Exame score: A+");
+			}
+
+			gameWonUI.SetActive (true);
+			Time.timeScale = 0;
+		}
 	}
 }
