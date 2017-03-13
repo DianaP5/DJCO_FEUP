@@ -8,6 +8,9 @@ public class PlatformGenerator : MonoBehaviour {
 	public GameObject platform;
 	public GameObject platCollider;
 
+    public GameObject[] powerUpArray;
+    public GameObject powerUp;
+
 	public Transform generationPoint;
 
 	public float[] distBetweenPlat;
@@ -48,11 +51,19 @@ public class PlatformGenerator : MonoBehaviour {
 			default:
 				break;
 			}
-			Debug.Log (arrayPos);
+			//Debug.Log (arrayPos);
 			Instantiate (platform, transform.position, transform.rotation);
 			prevPlatformWidth = platformWidth;
-			//Debug.Log (transform.position.y);
-			counter++;
+            //chance to add a power up to the platform
+            if (Random.value > 0.2)
+            {
+                int powerArrayPos = Random.Range(0, 4);
+                int deltaX = Random.Range(-5, 5);
+                powerUp = powerUpArray[powerArrayPos];
+                Instantiate(powerUp, new Vector3(transform.position.x + deltaX, transform.position.y + 4, transform.position.z), transform.rotation);
+            }
+            //Debug.Log (transform.position.y);
+            counter++;
 		} else if (!lastPlat) {
 			platform = platformArray [2];
 			transform.position = new Vector3 (transform.position.x + prevPlatformWidth + 4, transform.position.y + HeightDist < minHeight ? minHeight : transform.position.y + HeightDist, transform.position.z);
