@@ -150,45 +150,47 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Book"))
-        {
-            Destroy(col.gameObject);
-            gm.points += 1;
-        }
-        if (col.CompareTag("Door"))
-        {
-            if (gm.points <= 1)
-                Livros.text = ("You were able to collect " + gm.points + " Book!");
-            else
-                Livros.text = ("You were able to collect " + gm.points + " Books!");
+        if(body.IsTouching(col)){
+            if (col.CompareTag("Book"))
+            {
+                Destroy(col.gameObject);
+                gm.points += 1;
+            }
+            if (col.CompareTag("Door"))
+            {
+                if (gm.points <= 1)
+                    Livros.text = ("You were able to collect " + gm.points + " Book!");
+                else
+                    Livros.text = ("You were able to collect " + gm.points + " Books!");
 
-            if (gm.points < 10)
-            {
-                scoreText.text = ("Exame score: F");
-            }
-            else if (gm.points < 20)
-            {
-                scoreText.text = ("Exame score: D");
-            }
-            else if (gm.points < 30)
-            {
-                scoreText.text = ("Exame score: C");
-            }
-            else if (gm.points < 40)
-            {
-                scoreText.text = ("Exame score: B");
-            }
-            else if (gm.points < 50)
-            {
-                scoreText.text = ("Exame score: A");
-            }
-            else if (gm.points >= 50)
-            {
-                scoreText.text = ("Exame score: A+");
-            }
+                if (gm.points < 10)
+                {
+                    scoreText.text = ("Exame score: F");
+                }
+                else if (gm.points < 20)
+                {
+                    scoreText.text = ("Exame score: D");
+                }
+                else if (gm.points < 30)
+                {
+                    scoreText.text = ("Exame score: C");
+                }
+                else if (gm.points < 40)
+                {
+                    scoreText.text = ("Exame score: B");
+                }
+                else if (gm.points < 50)
+                {
+                    scoreText.text = ("Exame score: A");
+                }
+                else if (gm.points >= 50)
+                {
+                    scoreText.text = ("Exame score: A+");
+                }
 
-            gameWonUI.SetActive(true);
-            Time.timeScale = 0;
+                gameWonUI.SetActive(true);
+                Time.timeScale = 0;
+            }
         }
     }
 
