@@ -37,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
 
     private gameMaster gm;
 
+    public GameObject booksound;
+    public GameObject losesound;
+    public GameObject winsound;
+
     // Use this for initialization
     void Start()
     {
@@ -153,11 +157,17 @@ public class PlayerMovement : MonoBehaviour
         if(body.IsTouching(col)){
             if (col.CompareTag("Book"))
             {
+                booksound = GameObject.Find("Booksound");
+                booksound.GetComponent<AudioSource>().Play();
                 Destroy(col.gameObject);
                 gm.points += 1;
             }
             if (col.CompareTag("Door"))
             {
+
+                winsound = GameObject.Find("Winsound");
+                winsound.GetComponent<AudioSource>().Play();
+
                 if (gm.points <= 1)
                     Livros.text = ("You were able to collect " + gm.points + " Book!");
                 else

@@ -11,6 +11,8 @@ public class PowerUp : MonoBehaviour
     public float duration = 2f;
     public float factor = 1.5f;
 
+    public GameObject powerupsound;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
@@ -38,6 +40,9 @@ public class PowerUp : MonoBehaviour
                 default:
                     break;
             }
+
+            powerupsound = GameObject.Find("Powerupsound");
+            powerupsound.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }
         if (transform.position.x < destructionPoint.transform.position.x)
