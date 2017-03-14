@@ -13,7 +13,8 @@ public class Player : MonoBehaviour {
 	public int curHealth;
 	public int maxHealth;
 
-	public bool grounded;
+    //public bool grounded;
+    public int grounded;
 	public bool canDoubleJump;
 
 	private float timestamp;
@@ -31,9 +32,11 @@ public class Player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		anim.SetBool ("Grounded",grounded);
-		anim.SetFloat ("Speed", Mathf.Abs(rb2d.velocity.x));
+	void Update ()
+    {
+        //anim.SetBool ("Grounded",grounded);
+        anim.SetInteger("Grounded", grounded);
+        anim.SetFloat ("Speed", Mathf.Abs(rb2d.velocity.x));
 
 		if (Input.GetAxis("Horizontal")<-0.1f && transform.localScale.x >0) {
 			transform.localScale = new Vector3 (- transform.localScale.x, transform.localScale.y, 1);
@@ -45,7 +48,7 @@ public class Player : MonoBehaviour {
 
 		//jumping
 		if (Time.time >= timestamp && Input.GetButton("Jump")) {
-			if (grounded) {
+			if (grounded > 0) {
 				rb2d.AddForce (Vector2.up * jumpPower);
 				canDoubleJump = true;
 			} else {
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour {
 		float h = Input.GetAxis ("Horizontal");
 
 		//Fake friction / easing the x speed of our player
-		if (grounded) {
+		if (grounded > 0) {
 			rb2d.velocity = easeVelocity;
 		}
 

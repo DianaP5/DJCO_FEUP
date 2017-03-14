@@ -10,6 +10,6 @@ public class gameMaster : MonoBehaviour {
 	public Text pointsText;
 
 	void Update(){
-		pointsText.text = ("x " + points);
+		//pointsText.text = ("x " + points);
 	}
 }

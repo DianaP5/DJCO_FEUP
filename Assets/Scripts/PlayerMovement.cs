@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public CircleCollider2D magnet;
     public BoxCollider2D body;
 
+    public bool win;
 
     private float timestamp;
 
@@ -37,9 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private gameMaster gm;
 
-    public GameObject booksound;
-    public GameObject losesound;
-    public GameObject winsound;
+    public GameObject booksound, losesound, winsound, themesound, background;
 
     // Use this for initialization
     void Start()
@@ -52,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         curHealth = maxHealth;
         gm = GameObject.FindGameObjectWithTag("GameMaster").GetComponent<gameMaster>();
         gameWonUI.SetActive(false);
+        win = false;
     }
 
     // Update is called once per frame
@@ -76,20 +76,17 @@ public class PlayerMovement : MonoBehaviour
         if (Time.time >= timestamp && Input.GetButton("Jump"))
         {
             //if (grounded) {
-            if (grounded == 1)
+            if (grounded > 0)
             {
                 rb2d.AddForce(Vector2.up * jumpPower);
                 canDoubleJump = true;
             }
             else
             {
-                if (canDoubleJump)
-                {
                     Debug.Log("HERE");
-                    canDoubleJump = false;
                     rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
                     rb2d.AddForce(Vector2.up * jumpPower / 1.5f);
-                }
+                    canDoubleJump = false;
             }
             timestamp = Time.time + timeBetweenJumps;
         }
@@ -154,54 +151,60 @@ public class PlayerMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if(body.IsTouching(col)){
+
+        if (body.IsTouching(col))
+        {
+            
             if (col.CompareTag("Book"))
-            {
-                booksound = GameObject.Find("Booksound");
-                booksound.GetComponent<AudioSource>().Play();
-                Destroy(col.gameObject);
-                gm.points += 1;
+                {
+                    booksound = GameObject.Find("Booksound");
+                    booksound.GetComponent<AudioSource>().Play();
+                    Destroy(col.gameObject);
+                    gm.points += 1;
+                }
+                if (col.CompareTag("Door"))
+                {
+                    themesound = GameObject.Find("Theme");
+                    themesound.GetComponent<AudioSource>().Stop();
+                    winsound = GameObject.Find("Winsound");
+                    winsound.GetComponent<AudioSource>().Play();
+                    win = true;
+
+                    if (gm.points <= 1)
+                        Livros.text = ("You were able to collect " + gm.points + " Book!");
+                    else
+                        Livros.text = ("You were able to collect " + gm.points + " Books!");
+
+                    if (gm.points < 10)
+                    {
+                        scoreText.text = ("Exame score: F");
+                    }
+                    else if (gm.points < 20)
+                    {
+                        scoreText.text = ("Exame score: D");
+                    }
+                    else if (gm.points < 30)
+                    {
+                        scoreText.text = ("Exame score: C");
+                    }
+                    else if (gm.points < 40)
+                    {
+                        scoreText.text = ("Exame score: B");
+                    }
+                    else if (gm.points < 50)
+                    {
+                        scoreText.text = ("Exame score: A");
+                    }
+                    else if (gm.points >= 50)
+                    {
+                        scoreText.text = ("Exame score: A+");
+                    }
+
+                    gameWonUI.SetActive(true);
+                    Time.timeScale = 0;
+                }
             }
-            if (col.CompareTag("Door"))
-            {
-
-                winsound = GameObject.Find("Winsound");
-                winsound.GetComponent<AudioSource>().Play();
-
-                if (gm.points <= 1)
-                    Livros.text = ("You were able to collect " + gm.points + " Book!");
-                else
-                    Livros.text = ("You were able to collect " + gm.points + " Books!");
-
-                if (gm.points < 10)
-                {
-                    scoreText.text = ("Exame score: F");
-                }
-                else if (gm.points < 20)
-                {
-                    scoreText.text = ("Exame score: D");
-                }
-                else if (gm.points < 30)
-                {
-                    scoreText.text = ("Exame score: C");
-                }
-                else if (gm.points < 40)
-                {
-                    scoreText.text = ("Exame score: B");
-                }
-                else if (gm.points < 50)
-                {
-                    scoreText.text = ("Exame score: A");
-                }
-                else if (gm.points >= 50)
-                {
-                    scoreText.text = ("Exame score: A+");
-                }
-
-                gameWonUI.SetActive(true);
-                Time.timeScale = 0;
-            }
-        }
+        
     }
 
     public void EnableMagnet()

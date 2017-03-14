@@ -23,9 +23,6 @@ public class GroundCheck : MonoBehaviour {
 			player.grounded--;
 		}
 	}
-
-	void OnTriggerStay2d(Collider2D coll){
-		player.grounded = player.grounded;
-	}
+    
 
 }
