@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool canDoubleJump;
 
     public GameObject gameWonUI;
+    public GameObject gameLostUI;
     public Text Livros;
     public Text scoreText;
 
@@ -37,13 +38,18 @@ public class PlayerMovement : MonoBehaviour
 
     private gameMaster gm;
 
+    public GameObject themeSound;
+    public GameObject bookSound;
+    public GameObject loseSound;
+    public GameObject winSound;
+
     // Use this for initialization
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        //eff = GetComponent<PointEffector2D>();
-        eff = GetComponentInChildren<PointEffector2D>();
+        eff = GetComponent<PointEffector2D>();
+        //eff = GetComponentInChildren<PointEffector2D>();
         eff.enabled = false;
         curHealth = maxHealth;
         gm = GameObject.FindGameObjectWithTag("GameMaster").GetComponent<gameMaster>();
@@ -72,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         if (Time.time >= timestamp && Input.GetButton("Jump"))
         {
             //if (grounded) {
-            if (grounded == 1)
+            if (grounded >= 1)
             {
                 rb2d.AddForce(Vector2.up * jumpPower);
                 canDoubleJump = true;
@@ -83,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log("HERE");
                     canDoubleJump = false;
+                    grounded = 0;
                     rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
                     rb2d.AddForce(Vector2.up * jumpPower / 1.5f);
                 }
@@ -95,6 +102,11 @@ public class PlayerMovement : MonoBehaviour
             curHealth = maxHealth;
         }
         if (curHealth <= 0)
+        {
+            Die();
+        }
+
+        if (rb2d.position.y < -15)
         {
             Die();
         }
@@ -130,7 +142,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //Time.timeScale = 0f;
+        gameLostUI.SetActive(true);
     }
 
     public IEnumerator KnockBack(float knockDur, float knockPower, Vector3 kbDir)
@@ -151,13 +164,25 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if(body.IsTouching(col)){
+            if (col.CompareTag("Platform"))
+            {
+                KnockBack(1, 1, new Vector3(-1, 1, 0));
+            }
             if (col.CompareTag("Book"))
             {
+                bookSound = GameObject.Find("Booksound");
+                bookSound.GetComponent<AudioSource>().Play();
                 Destroy(col.gameObject);
                 gm.points += 1;
             }
             if (col.CompareTag("Door"))
             {
+
+                themeSound = GameObject.Find("Theme");
+                themeSound.GetComponent<AudioSource>().Stop();
+                winSound = GameObject.Find("Winsound");
+                winSound.GetComponent<AudioSource>().Play();
+
                 if (gm.points <= 1)
                     Livros.text = ("You were able to collect " + gm.points + " Book!");
                 else
@@ -193,7 +218,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
+    
     public void EnableMagnet()
     {
         eff.enabled = true;
