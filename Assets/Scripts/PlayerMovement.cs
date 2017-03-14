@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public bool canDoubleJump;
 
     public GameObject gameWonUI;
+    public GameObject gameLostUI;
     public Text Livros;
     public Text scoreText;
 
@@ -141,7 +142,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Die()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //Time.timeScale = 0f;
+        gameLostUI.SetActive(true);
     }
 
     public IEnumerator KnockBack(float knockDur, float knockPower, Vector3 kbDir)
