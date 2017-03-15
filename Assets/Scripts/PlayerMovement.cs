@@ -106,6 +106,7 @@ public class PlayerMovement : MonoBehaviour
     void Die()
     {
         //Time.timeScale = 0f;
+        moveSpeed = 0;
         themeSound = GameObject.Find("Theme");
         themeSound.GetComponent<AudioSource>().Stop();
         gameLostUI.SetActive(true);
