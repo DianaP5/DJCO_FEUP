@@ -35,7 +35,7 @@ public class PlatformGenerator : MonoBehaviour {
 		if (HeightDist>0) {
 			HeightDist = HeightDist / 2;
 		}
-		if (transform.position.x < generationPoint.position.x) {
+		//if (transform.position.x < generationPoint.position.x) {
 			int arrayPos;
 			switch (arrayPos = Random.Range (0, 2)) {
 			case 0:
@@ -64,12 +64,12 @@ public class PlatformGenerator : MonoBehaviour {
             }
             //Debug.Log (transform.position.y);
             counter++;
-		} else if (!lastPlat) {
+		/*} else if (!lastPlat) {
 			platform = platformArray [2];
 			transform.position = new Vector3 (transform.position.x + prevPlatformWidth + 4, transform.position.y + HeightDist < minHeight ? minHeight : transform.position.y + HeightDist, transform.position.z);
 			Instantiate (platform, transform.position, transform.rotation);
 			lastPlat = true;
-		}
+		}*/
 		
 	}
 }

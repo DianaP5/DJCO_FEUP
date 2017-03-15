@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             Die();
         }
 
-        if (rb2d.position.y < -15)
+        if (rb2d.position.y < -25)
         {
             Die();
         }
