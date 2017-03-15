@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     //public float maxSpeed = 3;
     //public float speed = 50f;
+    
     public float jumpPower = 150f;
     public float timeBetweenJumps = 1 / 4f;
     public float moveSpeed;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject gameLostUI;
     public Text Livros;
     public Text scoreText;
+    public Text currentScore;
 
     public CircleCollider2D magnet;
     public BoxCollider2D body;
@@ -143,6 +145,8 @@ public class PlayerMovement : MonoBehaviour
     void Die()
     {
         //Time.timeScale = 0f;
+        themeSound = GameObject.Find("Theme");
+        themeSound.GetComponent<AudioSource>().Stop();
         gameLostUI.SetActive(true);
     }
 
@@ -174,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
                 bookSound.GetComponent<AudioSource>().Play();
                 Destroy(col.gameObject);
                 gm.points += 1;
+                currentScore.text = "Score:" + gm.points.ToString();
             }
             if (col.CompareTag("Door"))
             {
