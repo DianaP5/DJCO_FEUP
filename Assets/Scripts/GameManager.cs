@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour {
 	private PlatformDestroyer[] platformList;
 
 	public DeathMenu theDeathScreen;
-	//public WonMenu theWonScreen;
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +29,6 @@ public class GameManager : MonoBehaviour {
 	{
 		thePlayer.gameObject.SetActive (false);
 		theDeathScreen.gameObject.SetActive (true);
-		//StartCoroutine ("RestartGameGo");
 	}
 
 	public void Reset()
@@ -46,20 +44,4 @@ public class GameManager : MonoBehaviour {
         platformGenerator.position = platformStartPoint;
         thePlayer.gameObject.SetActive(true);
     }
-
-	/*public IEnumerator RestartGameGo()
-	{
-		thePlayer.gameObject.SetActive (false);
-		yield return new WaitForSeconds (0.5f);
-
-		platformList = FindObjectsOfType<PlatformDestroyer> ();
-		for (int i = 0; i < platformList.Length; i++) 
-		{
-			platformList [i].gameObject.SetActive (false);
-		}
-
-		thePlayer.transform.position = playerStartPoint;
-		platformGenerator.position = platformStartPoint;
-		thePlayer.gameObject.SetActive (true);
-	}*/
 }

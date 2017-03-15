@@ -5,11 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
-{
-
-    //public float maxSpeed = 3;
-    //public float speed = 50f;
-    
+{    
     public float jumpPower = 150f;
     public float timeBetweenJumps = 1 / 4f;
     public float moveSpeed;
@@ -61,37 +57,25 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //anim.SetBool ("Grounded",grounded);
         anim.SetInteger("Grounded", grounded);
         anim.SetFloat("Speed", Mathf.Abs(rb2d.velocity.x));
 
         rb2d.velocity = new Vector2(moveSpeed, rb2d.velocity.y);
 
-        /*
-		if (Input.GetAxis("Horizontal")<-0.1f && transform.localScale.x >0) {
-			transform.localScale = new Vector3 (- transform.localScale.x, transform.localScale.y, 1);
-		}
-
-		if (Input.GetAxis("Horizontal")>0.1f ) {
-			transform.localScale = new Vector3 (Mathf.Abs(transform.localScale.x), transform.localScale.y, 1);
-		}*/
-
         //jumping
         if (Time.time >= timestamp && Input.GetButton("Jump"))
         {
-            //if (grounded) {
-            if (grounded >= 1)
+            if (grounded > 0)
             {
                 rb2d.AddForce(Vector2.up * jumpPower);
                 canDoubleJump = true;
+                //grounded = 0;
             }
             else
             {
                 if (canDoubleJump)
                 {
-                    Debug.Log("HERE");
                     canDoubleJump = false;
-                    grounded = 0;
                     rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
                     rb2d.AddForce(Vector2.up * jumpPower / 1.5f);
                 }
@@ -114,29 +98,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
-    {
-        /*Vector3 easeVelocity = rb2d.velocity;
-		easeVelocity.y = rb2d.velocity.y;
-		easeVelocity.z = 0.0f;
-		easeVelocity.x *= 0.75f;
-
-		//float h = Input.GetAxis ("Horizontal");
-
-		//Fake friction / easing the x speed of our player
-		if (grounded) {
-			rb2d.velocity = easeVelocity;
-		}*/
-
-        //rb2d.velocity = new Vector2 (moveSpeed, rb2d.velocity.y);
-
-        //limit speed of player
-        /*
-		if (Mathf.Abs(rb2d.velocity.x) > maxSpeed) {
-			rb2d.velocity = new Vector2 (Mathf.Sign(rb2d.velocity.x)* maxSpeed, rb2d.velocity.y);
-		}*/
-    }
-
     public void Damage(int dmg)
     {
         curHealth -= dmg;
@@ -153,7 +114,6 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator KnockBack(float knockDur, float knockPower, Vector3 kbDir)
     {
         float timer = 0;
-        Debug.Log(knockDur);
 
         while (knockDur > timer)
         {
@@ -168,28 +128,25 @@ public class PlayerMovement : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if(body.IsTouching(col)){
-            if (col.CompareTag("Platform"))
-            {
-                KnockBack(1, 1, new Vector3(-1, 1, 0));
-            }
+            
             if (col.CompareTag("Book"))
             {
                 bookSound = GameObject.Find("Booksound");
                 bookSound.GetComponent<AudioSource>().Play();
                 Destroy(col.gameObject);
                 gm.points += 1;
-                currentScore.text = "Score:" + gm.points.ToString();
+                currentScore.text = "x " + gm.points.ToString();
             }
+            //not in use
             if (col.CompareTag("Door"))
             {
-
                 themeSound = GameObject.Find("Theme");
                 themeSound.GetComponent<AudioSource>().Stop();
                 winSound = GameObject.Find("Winsound");
                 winSound.GetComponent<AudioSource>().Play();
 
-                if (gm.points <= 1)
-                    Livros.text = ("You were able to collect " + gm.points + " Book!");
+                if (gm.points == 1)
+                    Livros.text = ("You were able to collect 1 Book!");
                 else
                     Livros.text = ("You were able to collect " + gm.points + " Books!");
 
@@ -219,7 +176,6 @@ public class PlayerMovement : MonoBehaviour
                 }
 
                 gameWonUI.SetActive(true);
-                Time.timeScale = 0;
             }
         }
     }
